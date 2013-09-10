@@ -52,6 +52,10 @@ if $epel {
 if $epelt {
   include yumbase::epeltesting
 }
+
+if $puppet {
+  include yumbase::puppet
+}
  
 } else { 
  notice (" yumbase will not be setup on this operating system")

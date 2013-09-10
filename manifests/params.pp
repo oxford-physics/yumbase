@@ -21,5 +21,9 @@ class yumbase::params(
   $epeltreposerver  = 'download.fedoraproject.org',  
   $epeltpriority    =  '20', 
   
+  $puppet            =  true,
+  $puppetrepobaseurl =  'el',
+  $puppetreposerver  = 'yum.puppetlabs.com',  
+  $puppetpriority    =  '15',
   )
 { }
