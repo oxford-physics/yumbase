@@ -16,7 +16,9 @@ class yumbase (
   $epel             = $yumbase::params::epel,
   $epelt            = $yumbase::params::epelt,
   ) inherits yumbase::params {
-    
+ 
+ tag("repo") 
+      
  if $::osfamily == 'RedHat' { 
    
   
@@ -38,7 +40,8 @@ class yumbase (
 file { "/etc/yum.repos.d":
     ensure => directory,
     recurse => true,
-    purge => true
+    purge => true,
+    ignore => "$ignore_auto_perge",
  }
 
 if $sl {
