@@ -22,7 +22,7 @@ class yumbase (
  if $::osfamily == 'RedHat' { 
    
   
-  if $autoupdate == true {
+  if $autoupdate == 'true' {
   augeas { "yum_autoupdate" :
       context  => "/files/etc/sysconfig/yum-autoupdate",
 
@@ -33,7 +33,7 @@ class yumbase (
         augeas { "yum_autoupdate" :
       context  => "/files/etc/sysconfig/yum-autoupdate",
 
-      changes  =>  "set DISABLED '\"$autoupdate\"'" ,
+      changes  =>  "set ENABLED '\"$autoupdate\"'" ,
     }
   }
   
