@@ -19,19 +19,12 @@ class yumbase (
  
  tag("repo") 
 
-# file { '/etc/sysconfig/yum-autoupdate' : 
-#       ensure => present,
-#       owner   => 'root',
-#       group   => 'root',
-# }      
 
  if $::osfamily == 'RedHat' { 
    
   
   if $autoupdate == 'true' {
   augeas { "yum_autoupdate" :
-      #load_path => "/usr/share/augeas/lenses/",
-      #lens => "yumautoupdate.aug",
       context  => "/files/etc/sysconfig/yum-autoupdate",
       changes  =>  "set ENABLED '\"$autoupdate\"'" ,
     }
@@ -41,13 +34,12 @@ class yumbase (
       context  => "/files/etc/sysconfig/yum-autoupdate",
       changes  =>  "set ENABLED '\"$autoupdate\"'" ,
     }
-   include yumbase::workarounds
   }
   
 file { "/etc/yum.repos.d":
     ensure => directory,
     recurse => true,
-    purge => true,
+    purge => "$auto_perge",
     ignore => "$ignore_auto_perge",
  }
 

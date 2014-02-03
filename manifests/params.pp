@@ -1,5 +1,6 @@
 class yumbase::params(
   $autoupdate        =  'false',
+  $auto_perge        =  'true',
   $ignore_auto_perge = '',
   $slrepobaseurl     = 'linux/scientific',
   $slreposerver      = 'ftp.scientificlinux.org',
