@@ -18,23 +18,30 @@ class yumbase (
   ) inherits yumbase::params {
  
  tag("repo") 
-      
+
+# file { '/etc/sysconfig/yum-autoupdate' : 
+#       ensure => present,
+#       owner   => 'root',
+#       group   => 'root',
+# }      
+
  if $::osfamily == 'RedHat' { 
    
   
   if $autoupdate == 'true' {
   augeas { "yum_autoupdate" :
+      #load_path => "/usr/share/augeas/lenses/",
+      #lens => "yumautoupdate.aug",
       context  => "/files/etc/sysconfig/yum-autoupdate",
-
       changes  =>  "set ENABLED '\"$autoupdate\"'" ,
     }
   }  
   else {
-        augeas { "yum_autoupdate" :
+  augeas { "yum_autoupdate" :
       context  => "/files/etc/sysconfig/yum-autoupdate",
-
       changes  =>  "set ENABLED '\"$autoupdate\"'" ,
     }
+   include yumbase::workarounds
   }
   
 file { "/etc/yum.repos.d":
