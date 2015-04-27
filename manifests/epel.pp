@@ -4,6 +4,7 @@ class yumbase::epel (
   $epelpriority     = $yumbase::params::epelpriority,
   $epelrepobaseurl  = $yumbase::params::epelrepobaseurl,
   $epelreposerver   = $yumbase::params::epelreposerver,
+  $epelexclude      = $yumbase::params::epelexclude,
 ) inherits yumbase::params {
   
   yumbase::ai121yumrepo {
@@ -12,7 +13,8 @@ class yumbase::epel (
             baseurl  => "http://${epelreposerver}/${epelrepobaseurl}/${operatingsystemmajrelease}/${architecture}",
             priority =>  "${epelpriority}",
             gpgcheck => "0",
-            gpgkey   =>  'absent',            
+            gpgkey   =>  'absent',
+            exclude  =>  "${epelexclude}",             
             enabled =>  $epel ? {
               true => "1",
               false => "0"

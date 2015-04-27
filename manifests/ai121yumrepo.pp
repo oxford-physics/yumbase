@@ -1,4 +1,4 @@
-define  yumbase::ai121yumrepo ($enabled,$baseurl,$descr,$includepkgs='absent',$protect='0',$gpgcheck='1',$gpgkey='absent',$priority='99') {
+define  yumbase::ai121yumrepo ($enabled,$baseurl,$descr,$includepkgs='absent',$exclude='absent',$protect='0',$gpgcheck='1',$gpgkey='absent',$priority='99') {
 
 $filename = $title
 
@@ -8,6 +8,7 @@ yumrepo{$filename:
    baseurl      => $baseurl,
    protect      => $protect,
    includepkgs  => $includepkgs,
+   exclude      => $exclude,
    gpgcheck     => $gpgcheck,
    gpgkey       => $gpgkey,
    priority     => $priority,
