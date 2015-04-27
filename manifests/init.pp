@@ -11,10 +11,12 @@
 # Sample Usage:
 #
 class yumbase (
-  $autoupdate       = $yumbase::params::autoupdate,
-  $sl               = $yumbase::params::sl,
-  $epel             = $yumbase::params::epel,
-  $epelt            = $yumbase::params::epelt,
+  $autoupdate        = $yumbase::params::autoupdate,
+  $sl                = $yumbase::params::sl,
+  $epel              = $yumbase::params::epel,
+  $epelt             = $yumbase::params::epelt,
+  $installonly_limit = $yumbase::params::installonly_limit,
+  $debuglevel        = $yumbase::params::debuglevel,
   ) inherits yumbase::params {
  
  tag("repo") 
@@ -36,6 +38,14 @@ class yumbase (
     }
   }
   
+file { "/etc/yum.conf":
+    ensure => present,
+    mode   => 0644,
+    owner  => root,
+    group  => root,
+    content=> template("yumbase/yum.conf.el6"),
+}
+
 file { "/etc/yum.repos.d":
     ensure => directory,
     recurse => true,
@@ -43,8 +53,17 @@ file { "/etc/yum.repos.d":
     ignore => "$ignore_auto_perge",
  }
 
-if $sl {
-  include yumbase::sl
+###TODO: replace SL part entirely with 'os' to cope with Centos in a sensible way
+case $operatingsystem {
+             /Scientific/:  {
+ if $sl {
+   include yumbase::sl
+ }
+}
+  
+          /CentOS/:  {
+    include yumbase::os
+ } 
 }
 
 if $epel {
