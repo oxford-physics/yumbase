@@ -16,7 +16,7 @@ class yumbase::virtual (
   yumbase::ai121yumrepo {
         'vmware-tools':
             descr    => "VMware Tools for CentOS (or OEL) ${operatingsystemmajrelease}  -\$basearch ",
-            baseurl  => "http://${vmwarereposerver}/${vmwarerepobaseurl}${operatingsystemmajrelease}/\$basearch",
+            baseurl  => "http://${vmwarereposerver}/${vmwarerepobaseurl}/rhel${operatingsystemmajrelease}/\$basearch",
             priority =>  "${vmwarepriority}",
             gpgcheck => "0",
             gpgkey   =>  'absent',            

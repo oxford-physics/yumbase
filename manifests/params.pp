@@ -35,5 +35,12 @@ class yumbase::params(
   $puppetrepobaseurl =  'el',
   $puppetreposerver  = 'yum.puppetlabs.com',  
   $puppetpriority    =  '15',
+  
+  $vmware            = 'vmware',
+  $vmwarepriority    = '15',
+  $vmwarerepobaseurl = 'tools/esx/latest',
+  $vmwarereposerver  = 'packages.vmware.com',
+
+
   )
 { }
