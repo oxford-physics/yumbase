@@ -14,10 +14,25 @@ class yumbase::os (
   
 ) inherits yumbase::params {
   
+         case $::operatingsystem {
+
+  /CentOS/: {
+            $osbaseurl  = "http://${osreposerver}/${$osrepobaseurl}/${operatingsystemmajrelease}/os/${architecture}"
+            $secbaseurl  = "http://${ossecreposerver}/${$ossecrepobaseurl}/${operatingsystemmajrelease}/updates/${architecture}"
+            $debugbaseurl  = "http://${osdebugreposerver}/${$osdebugrepobaseurl}/${operatingsystemmajrelease}/${architecture}"
+            }
+  default: {
+            $osbaseurl  = "http://${osreposerver}/${$osrepobaseurl}/${operatingsystemmajrelease}/${architecture}/os"
+            $secbaseurl  = "http://${ossecreposerver}/${ossecrepobaseurl}/${operatingsystemmajrelease}/${architecture}/updates/security"
+            $debugbaseurl  = "http://${osdebugreposerver}/${osdebugrepobaseurl}/debuginfo"
+           }
+}
+
+
   yumbase::ai121yumrepo {
         'os':
             descr    => "Base Enterprise Linux ${operatingsystem}  - ${architecture}",
-            baseurl  => "http://${osreposerver}/${$osrepobaseurl}/${operatingsystemmajrelease}/${architecture}/os",
+            baseurl => "${osbaseurl}",
             priority =>  "${ospriority}",
             gpgcheck => '0',
             gpgkey   =>  'absent',            
@@ -31,7 +46,7 @@ class yumbase::os (
  yumbase::ai121yumrepo {
         'os-security':
             descr    => "Base Enterprise Linux Security ${operatingsystem}  - ${architecture}",
-            baseurl  => "http://${ossecreposerver}/${ossecrepobaseurl}/${operatingsystemmajrelease}/${architecture}/updates/security",
+            baseurl => "${secbaseurl}",
             priority =>  "${ossecpriority}",
             gpgcheck => "0",
             gpgkey   =>  'absent',
@@ -43,8 +58,8 @@ class yumbase::os (
  yumbase::ai121yumrepo {
         'os-debug':
             descr    => "Base Enterprise Linux debuginfo ${operatingsystem}  - ${architecture}",
-            baseurl  => "http://${osdebugreposerver}/${osdebugrepobaseurl}/debuginfo",
-            priority =>  "${ossecpriority}",
+            baseurl =>  "${debugbaseurl}",
+            priority =>  "${osdebugpriority}",
             gpgcheck => "0",
             gpgkey   =>  'absent',
             enabled =>  $osdebug ? {
