@@ -12,11 +12,11 @@
 #
 class yumbase (
   $autoupdate        = $yumbase::params::autoupdate,
-  $sl                = $yumbase::params::sl,
   $epel              = $yumbase::params::epel,
   $epelt             = $yumbase::params::epelt,
   $installonly_limit = $yumbase::params::installonly_limit,
   $debuglevel        = $yumbase::params::debuglevel,
+  $test              = false
   ) inherits yumbase::params {
  
  tag("repo") 
@@ -37,7 +37,7 @@ class yumbase (
       changes  =>  "set ENABLED '\"$autoupdate\"'" ,
     }
   }
-  
+if $operatingsystemmajrelease == '6' { 
 file { "/etc/yum.conf":
     ensure => present,
     mode   => 0644,
@@ -45,7 +45,7 @@ file { "/etc/yum.conf":
     group  => root,
     content=> template("yumbase/yum.conf.el6"),
 }
-
+}
 file { "/etc/yum.repos.d":
     ensure => directory,
     recurse => true,
@@ -53,18 +53,9 @@ file { "/etc/yum.repos.d":
     ignore => "$ignore_auto_perge",
  }
 
-###TODO: replace SL part entirely with 'os' to cope with Centos in a sensible way
-case $operatingsystem {
-             /Scientific/:  {
- if $sl {
-   include yumbase::sl
+ if $os {
+   include yumbase::os
  }
-}
-  
-          /CentOS/:  {
-    include yumbase::os
- } 
-}
 
 if $epel {
   include yumbase::epel

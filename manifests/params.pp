@@ -5,29 +5,23 @@ class yumbase::params(
   $installonly_limit = 3,
   $debuglevel = 2,
 
-  $slrepobaseurl     = 'linux/scientific',
-  $slreposerver      = 'ftp.scientificlinux.org',
-  $sl                =  true,
-  $slpriority        =  '5',
-  
-  $slsec             =  true,  
-  $slsecrepobaseurl  =  'linux/scientific',
-  $slsecreposerver   = 'ftp.scientificlinux.org',  
-  $slsecpriority     = '5',
+  $os                =  true,
+  $ospriority        =  '5',
 
-  $sldebug             =  false,  
-  $sldebugrepobaseurl  =  'linux/scientific/6.5/archive',
-  $sldebugreposerver   = 'ftp.scientificlinux.org',  
-  $sldebugpriority     = '5',
+  $ossec             = true,
+  $ossecpriority     = '5',
+
+  $osdebug             =  false,
+  $osdebugpriority     = '5',
 
   $epel              =  true,
-  $epelrepobaseurl   =  'pub/epel/testing',
+  $epelrepobaseurl   =  'pub/epel',
   $epelreposerver    =  'download.fedoraproject.org',
   $epelpriority      = '20',
   $epelexclude       = 'absent',
   
   $epelt             =  false,
-  $epeltrepobaseurl  =  'pub/epel',
+  $epeltrepobaseurl  =  'pub/epel/testing',
   $epeltreposerver   = 'download.fedoraproject.org',  
   $epeltpriority     =  '20', 
   
@@ -38,52 +32,60 @@ class yumbase::params(
   
   $vmware            = 'vmware',
   $vmwarepriority    = '15',
-  $vmwarerepobaseurl = 'tools/esx/latest',
   $vmwarereposerver  = 'packages.vmware.com'
-
-
   )
 
 {
+  
+  case $::operatingsystem {
 
+     default: {}
+     /CentOS/,  /Scientific/: {
+        case $::operatingsystemmajrelease { 
+           /6/: {
+               $vmwarerepobaseurl = hiera("yumbase::params::vmwarerepobaseurl", 'tools/esx/latest')
+           }
+           /7/: { 
+               $vmwarerepobaseurl = hiera("yumbase::params::vmwarerepobaseurl", 'packages')
+           }
+        }
+    } 
+  }
+  
   case $::operatingsystem {
 
   default: {}
   /CentOS/: {
 
-  $osrepobaseurl     = 'centos'
-  $osreposerver      = 'mirror.centos.org'
-  $os                =  true
-  $ospriority        =  '5'
-  
-  $ossec             =  true
-  $ossecrepobaseurl  =  'centos'
-  $ossecreposerver   = 'mirror.centos.org'
-  $ossecpriority     = '5'
+  $osrepobaseurlin     = 'centos'
+  $osreposerverin      = 'mirror.centos.org'
+ 
+  $ossecrepobaseurlin  =  'centos'
+  $ossecreposerverin   = 'mirror.centos.org'
 
-  $osdebug             =  false
-  $osdebugrepobaseurl  =  'centos'
-  $osdebugreposerver   = 'mirror.centos.org'
-  $osdebugpriority     = '5'
+  $osdebugrepobaseurlin  =  'centos'
+  $osdebugreposerverin   = 'mirror.centos.org'
   }
 
   /Scientific/: {
 
-  $osrepobaseurl     = 'linux/scientific'
-  $osreposerver      = 'ftp.scientificlinux.org'
-  $os                =  false
-  $ospriority        =  '5'
+  $osrepobaseurlin     = 'linux/scientific'
+  $osreposerverin      = 'ftp.scientificlinux.org'
   
-  $ossec             =  false
-  $ossecrepobaseurl  =  'linux/scientific'
-  $ossecreposerver   = 'ftp.scientificlinux.org'
-  $ossecpriority     = '5'
+  $ossecrepobaseurlin  =  'linux/scientific'
+  $ossecreposerverin   = 'ftp.scientificlinux.org'
 
-  $osdebug             =  false
-  $osdebugrepobaseurl  =  'linux/scientific/6.5/archive'
-  $osdebugreposerver   = 'ftp.scientificlinux.org'
-  $osdebugpriority     = '5'
+  $osdebugrepobaseurlin  =  "linux/scientific/$::operatingsystemrelease/archive"
+  $osdebugreposerverin   = 'ftp.scientificlinux.org'
+
   }
+
   }
+  $osrepobaseurl = hiera('yumbase::params::osrepobaseurl',             "$osrepobaseurlin")
+  $osreposerver = hiera('yumbase::params::osreposerver',               "$osreposerverin")
+  $ossecreposerver = hiera('yumbase::params::ossecreposerver',         "$ossecreposerverin")
+  $ossecrepobaseurl = hiera('yumbase::params::ossecrepobaseurl'       ,"$ossecrepobaseurlin")
+  $osdebugreposerver = hiera('yumbase::params::osdebugreposerverrepo' ,"$osdebugreposerverin")
+  $osdebugrepobaseurl = hiera('yumbase::params::osdebugrepobaseurl'   ,"$osdebugrepobaseurlin")
 }
 
