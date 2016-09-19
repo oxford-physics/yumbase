@@ -17,13 +17,13 @@ class yumbase::os (
          case $facts['os']['name'] {
 
   /CentOS/: {
-            $osbaseurl  = "http://${osreposerver}/${$osrepobaseurl}/$facts['os']['release']['major']/os/$facts['os']['architecture']"
-            $secbaseurl  = "http://${ossecreposerver}/${$ossecrepobaseurl}/$facts['os']['release']['major']/updates/$facts['os']['architecture']"
-            $debugbaseurl  = "http://${osdebugreposerver}/${$osdebugrepobaseurl}/$facts['os']['release']['major']/$facts['os']['architecture']"
+            $osbaseurl  = "http://${osreposerver}/${$osrepobaseurl}/$facts{['os']['release']['major']/os/$facts['os']['architecture']}"
+            $secbaseurl  = "http://${ossecreposerver}/${$ossecrepobaseurl}/$facts{['os']['release']['major']}/updates/$facts{['os']['architecture']}"
+            $debugbaseurl  = "http://${osdebugreposerver}/${$osdebugrepobaseurl}/${facts['os']['release']['major']}/${facts['os']['architecture']}"
             }
   default: {
-            $osbaseurl  = "http://${osreposerver}/${$osrepobaseurl}/$facts['os']['release']['major']/$facts['os']['architecture']/os"
-            $secbaseurl  = "http://${ossecreposerver}/${ossecrepobaseurl}/$facts['os']['release']['major']/$facts['os']['architecture']/updates/security"
+            $osbaseurl  = "http://${osreposerver}/${$osrepobaseurl}/${facts['os']['release']['major']}/${facts['os']['architecture']}/os"
+            $secbaseurl  = "http://${ossecreposerver}/${ossecrepobaseurl}/${facts['os']['release']['major']}/${facts['os']['architecture']}/updates/security"
             $debugbaseurl  = "http://${osdebugreposerver}/${osdebugrepobaseurl}/debuginfo"
            }
 }
@@ -31,7 +31,7 @@ class yumbase::os (
 
     yumrepo {
         'os':
-            descr    => "Base Enterprise Linux $facts['os']['name']  - $facts['os']['architecture']",
+            descr    => "Base Enterprise Linux ${facts['os']['name']}  - ${facts['os']['architecture']}",
             baseurl => "${osbaseurl}",
             priority =>  "${ospriority}",
             gpgcheck => '0',
@@ -45,7 +45,7 @@ class yumbase::os (
 
    yumrepo {
         'os-security':
-            descr    => "Base Enterprise Linux Security $facts['os']['name']  - $facts['os']['architecture']",
+            descr    => "Base Enterprise Linux Security ${facts['os']['name']}  - ${facts['os']['architecture']}",
             baseurl => "${secbaseurl}",
             priority =>  "${ossecpriority}",
             gpgcheck => "0",
@@ -57,7 +57,7 @@ class yumbase::os (
        }
     yumrepo {
         'os-debug':
-            descr    => "Base Enterprise Linux debuginfo $facts['os']['name']  - $facts['os']['architecture']",
+            descr    => "Base Enterprise Linux debuginfo ${facts['os']['name']}  - ${facts['os']['architecture']}",
             baseurl =>  "${debugbaseurl}",
             priority =>  "${osdebugpriority}",
             gpgcheck => "0",

@@ -10,8 +10,8 @@ class yumbase::epeltesting (
     
   yumrepo {
         'epeltesting':
-            descr    => "Epel testing  $facts['os']['release']['major']  - $facts['os']['architecture']",
-            baseurl  => "http://${epeltreposerver}/${epeltrepobaseurl}/$facts['os']['release']['major']/$facts['os']['architecture']",
+            descr    => "Epel testing  ${facts['os']['release']['major']}  - ${facts['os']['architecture']}",
+            baseurl  => "http://${epeltreposerver}/${epeltrepobaseurl}/${facts['os']['release']['major']}/${facts['os']['architecture']}",
             priority =>  "${epelpriority}",
             gpgcheck => "0",
             gpgkey   =>  'absent',

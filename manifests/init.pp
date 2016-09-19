@@ -22,8 +22,8 @@ class yumbase (
  tag("repo") 
 
 
- if $facts['os']['family'] == 'RedHat' { 
-   if $facts['os']['release']['major'] == "6" {   
+ if ($facts['os']['family'] == 'RedHat') { 
+   if ($facts['os']['release']['major'] == "6") {   
   
      if $autoupdate == 'true' {
        augeas { "yum_autoupdate" :
@@ -48,7 +48,7 @@ class yumbase (
    }
 
   if $os {
-   
+  notify { "my arch is ${facts['os']['release']['major']}":} 
    include yumbase::os
   }
 

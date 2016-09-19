@@ -75,7 +75,7 @@ class yumbase::params(
   $ossecrepobaseurlin  =  'linux/scientific'
   $ossecreposerverin   = 'ftp.scientificlinux.org'
 
-  $osdebugrepobaseurlin  =  "linux/scientific/$facts['os']['release']['full']/archive"
+  $osdebugrepobaseurlin  =  "linux/scientific/${facts['os']['release']['full']}/archive"
   $osdebugreposerverin   = 'ftp.scientificlinux.org'
 
   }
