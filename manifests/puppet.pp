@@ -6,10 +6,10 @@ class yumbase::puppet (
   $puppetreposerver   = $yumbase::params::puppetreposerver,
 ) inherits yumbase::params {
   
-  yumbase::ai121yumrepo {
+  yumrepo {
         'puppetlabs-product':
-            descr    => "Puppet Labs Product EL ${operatingsystemmajrelease}  -\$basearch ",
-            baseurl  => "http://${puppetreposerver}/${puppetrepobaseurl}/${operatingsystemmajrelease}/products/\$basearch",
+            descr    => "Puppet Labs Product EL $facts['os']['release']['major']  -\$basearch ",
+            baseurl  => "http://${puppetreposerver}/${puppetrepobaseurl}/$facts['os']['release']['major']/products/\$basearch",
             priority =>  "${puppetpriority}",
             gpgcheck => "0",
             gpgkey   =>  'absent',            
@@ -18,10 +18,10 @@ class yumbase::puppet (
               false => "0"
             };
          }   
-   yumbase::ai121yumrepo {
+   yumrepo {
         'puppetlabs-deps':
-            descr    => "Puppet Labs Product EL ${operatingsystemmajrelease}  -\$basearch ",
-            baseurl  => "http://${puppetreposerver}/${puppetrepobaseurl}/${operatingsystemmajrelease}/dependencies/\$basearch",
+            descr    => "Puppet Labs Product EL $facts['os']['release']['major']  -\$basearch ",
+            baseurl  => "http://${puppetreposerver}/${puppetrepobaseurl}/$facts['os']['release']['major']/dependencies/\$basearch",
             priority =>  "${puppetpriority}",
             gpgcheck => "0",
             gpgkey   =>  'absent',            

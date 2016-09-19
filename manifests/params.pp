@@ -14,7 +14,7 @@ class yumbase::params(
   $osdebug             =  false,
   $osdebugpriority     = '5',
 
-  $epel              =  true,
+  $epel              =  false,
   $epelrepobaseurl   =  'pub/epel',
   $epelreposerver    =  'download.fedoraproject.org',
   $epelpriority      = '20',
@@ -25,7 +25,7 @@ class yumbase::params(
   $epeltreposerver   = 'download.fedoraproject.org',  
   $epeltpriority     =  '20', 
   
-  $puppet            =  true,
+  $puppet            =  false,
   $puppetrepobaseurl =  'el',
   $puppetreposerver  = 'yum.puppetlabs.com',  
   $puppetpriority    =  '15',
@@ -37,11 +37,11 @@ class yumbase::params(
 
 {
   
-  case $::operatingsystem {
+  case $facts['os']['name'] {
 
      default: {}
      /CentOS/,  /Scientific/: {
-        case $::operatingsystemmajrelease { 
+        case $facts['os']['release']['major'] { 
            /6/: {
                $vmwarerepobaseurl = hiera("yumbase::params::vmwarerepobaseurl", 'tools/esx/latest')
            }
@@ -52,7 +52,7 @@ class yumbase::params(
     } 
   }
   
-  case $::operatingsystem {
+  case $facts['os']['name'] {
 
   default: {}
   /CentOS/: {
@@ -75,7 +75,7 @@ class yumbase::params(
   $ossecrepobaseurlin  =  'linux/scientific'
   $ossecreposerverin   = 'ftp.scientificlinux.org'
 
-  $osdebugrepobaseurlin  =  "linux/scientific/$::operatingsystemrelease/archive"
+  $osdebugrepobaseurlin  =  "linux/scientific/$facts['os']['release']['full']/archive"
   $osdebugreposerverin   = 'ftp.scientificlinux.org'
 
   }
