@@ -22,52 +22,46 @@ class yumbase (
  tag("repo") 
 
 
- if $::osfamily == 'RedHat' { 
-   
+ if $::os.family == 'RedHat' { 
+   if $::os.familiy.major == '7' {   
   
-  if $autoupdate == 'true' {
-  augeas { "yum_autoupdate" :
-      context  => "/files/etc/sysconfig/yum-autoupdate",
-      changes  =>  "set ENABLED '\"$autoupdate\"'" ,
+     if $autoupdate == 'true' {
+       augeas { "yum_autoupdate" :
+       context  => "/files/etc/sysconfig/yum-autoupdate",
+       changes  =>  "set ENABLED '\"$autoupdate\"'" ,
+       }
+     }  
+     else {
+       augeas { "yum_autoupdate" :
+       context  => "/files/etc/sysconfig/yum-autoupdate",
+       changes  =>  "set ENABLED '\"$autoupdate\"'" ,
+      }
     }
-  }  
-  else {
-  augeas { "yum_autoupdate" :
-      context  => "/files/etc/sysconfig/yum-autoupdate",
-      changes  =>  "set ENABLED '\"$autoupdate\"'" ,
-    }
-  }
-if $operatingsystemmajrelease == '6' { 
-file { "/etc/yum.conf":
-    ensure => present,
-    mode   => 0644,
-    owner  => root,
-    group  => root,
-    content=> template("yumbase/yum.conf.el6"),
-}
-}
-file { "/etc/yum.repos.d":
-    ensure => directory,
-    recurse => true,
-    purge => "$auto_perge",
-    ignore => "$ignore_auto_perge",
- }
 
- if $os {
+    file { "/etc/yum.conf":
+       ensure => present,
+       mode   => 0644,
+       owner  => root,
+       group  => root,
+       content=> template("yumbase/yum.conf.el6"),
+      }
+   }
+
+  if $os {
    include yumbase::os
- }
+  }
 
-if $epel {
-  include yumbase::epel
-}
+  if $epel {
+   include yumbase::epel
+  }
 
-if $epelt {
-  include yumbase::epeltesting
-}
+  if $epelt {
+   include yumbase::epeltesting
+  }
 
-if $puppet {
-  include yumbase::puppet
-}
+  if $puppet {
+   include yumbase::puppet
+  }
  
 } else { 
  notice (" yumbase will not be setup on this operating system")
