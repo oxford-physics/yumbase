@@ -16,7 +16,7 @@ class yumbase (
   $epelt             = $yumbase::params::epelt,
   $installonly_limit = $yumbase::params::installonly_limit,
   $debuglevel        = $yumbase::params::debuglevel,
-  $test              = false
+  $tidyup            = $yumbase::params::tidyup  # Remove repos generated at install time
   ) inherits yumbase::params {
  
  tag("repo") 
@@ -46,10 +46,33 @@ class yumbase (
        content=> template("yumbase/yum.conf.el6"),
       }
    }
+ 
+   if ($facts['os']['release']['major'] == "7") {
+
+     if $autoupdate == 'true' {
+       augeas { "yum_autoupdate" :
+       context  => "/files/etc/yum/yum-cron.conf",
+       changes  =>  "set commands/apply_updates yes" ,
+       }
+     }
+     else {
+       augeas { "yum_autoupdate" :
+       context  => "/files/etc/yum/yum-cron.conf",
+       changes  =>  "set commands/apply_updates no" ,
+      }
+    }
+
+   }
 
   if $os {
   notify { "my arch is ${facts['os']['release']['major']}":} 
    include yumbase::os
+   if $tidyup {
+     tidy { '/etc/yum.repos.d':
+         matches => [ 'sl[6-7]*.repo', 'repos.repo', 'sl-extras.repo', 'redhat.repo'],
+         recurse => 1,
+     }
+   }
   }
 
   if $epel {

@@ -17,8 +17,8 @@ class yumbase::os (
          case $facts['os']['name'] {
 
   /CentOS/: {
-            $osbaseurl  = "http://${osreposerver}/${$osrepobaseurl}/$facts{['os']['release']['major']/os/$facts['os']['architecture']}"
-            $secbaseurl  = "http://${ossecreposerver}/${$ossecrepobaseurl}/$facts{['os']['release']['major']}/updates/$facts{['os']['architecture']}"
+            $osbaseurl  = "http://${osreposerver}/${$osrepobaseurl}/${facts['os']['release']['major']}/os/${facts['os']['architecture']}"
+            $secbaseurl  = "http://${ossecreposerver}/${$ossecrepobaseurl}/${facts['os']['release']['major']}/updates/${facts['os']['architecture']}"
             $debugbaseurl  = "http://${osdebugreposerver}/${$osdebugrepobaseurl}/${facts['os']['release']['major']}/${facts['os']['architecture']}"
             }
   default: {

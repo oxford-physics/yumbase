@@ -9,8 +9,8 @@ class yumbase::epel (
   
   yumrepo {
         'epel':
-            descr    => "Epel $facts['os']['release']['major']  - $facts['os']['architecture']",
-            baseurl  => "http://${epelreposerver}/${epelrepobaseurl}/$facts['os']['release']['major']/$facts['os']['architecture']",
+            descr    => "Epel ${facts['os']['release']['major']}  - ${facts['os']['architecture']}",
+            baseurl  => "http://${epelreposerver}/${epelrepobaseurl}/${facts['os']['release']['major']}/${facts['os']['architecture']}",
             priority =>  "${epelpriority}",
             gpgcheck => "0",
             gpgkey   =>  'absent',
