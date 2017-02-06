@@ -11,20 +11,26 @@ class yumbase::os (
   $ossecrepobaseurl    = $yumbase::params::ossecrepobaseurl,
   $osdebugreposerver   = $yumbase::params::osdebugreposerver,
   $osdebugrepobaseurl  = $yumbase::params::osdebugrepobaseurl,
+  $osbugfixreposerver  = $yumbase::params::osbugfixreposerver,
+  $osbugfixrepobaseurl  = $yumbase::params::osbugfixrepobaseurl,
+  $bugfixpriority      = $yumbase::params::bugfixpriority,
+  $osbugfix            = $yumbase::params::osbugfix,
+  
   
 ) inherits yumbase::params {
   
          case $facts['os']['name'] {
 
   /CentOS/: {
-            $osbaseurl  = "http://${osreposerver}/${$osrepobaseurl}/${facts['os']['release']['major']}/os/${facts['os']['architecture']}"
-            $secbaseurl  = "http://${ossecreposerver}/${$ossecrepobaseurl}/${facts['os']['release']['major']}/updates/${facts['os']['architecture']}"
+            $osbaseurl     = "http://${osreposerver}/${$osrepobaseurl}/${facts['os']['release']['major']}/os/${facts['os']['architecture']}"
+            $secbaseurl    = "http://${ossecreposerver}/${$ossecrepobaseurl}/${facts['os']['release']['major']}/updates/${facts['os']['architecture']}"
             $debugbaseurl  = "http://${osdebugreposerver}/${$osdebugrepobaseurl}/${facts['os']['release']['major']}/${facts['os']['architecture']}"
             }
   default: {
-            $osbaseurl  = "http://${osreposerver}/${$osrepobaseurl}/${facts['os']['release']['major']}/${facts['os']['architecture']}/os"
-            $secbaseurl  = "http://${ossecreposerver}/${ossecrepobaseurl}/${facts['os']['release']['major']}/${facts['os']['architecture']}/updates/security"
+            $osbaseurl     = "http://${osreposerver}/${$osrepobaseurl}/${facts['os']['release']['major']}/${facts['os']['architecture']}/os"
+            $secbaseurl    = "http://${ossecreposerver}/${ossecrepobaseurl}/${facts['os']['release']['major']}/${facts['os']['architecture']}/updates/security"
             $debugbaseurl  = "http://${osdebugreposerver}/${osdebugrepobaseurl}/debuginfo"
+            $bugfixbaseurl = "http://${osbugfixreposerver}/${osbugfixrepobaseurl}/${facts['os']['release']['major']}/${facts['os']['architecture']}/updates/fastbugs"
            }
 }
 
@@ -67,5 +73,18 @@ class yumbase::os (
               false => "0"
             };     
        }
+     yumrepo {
+        'os-fastbugs':
+            descr    => "bugfix updates ${facts['os']['name']}  - ${facts['os']['architecture']}",
+            baseurl =>  "${bugfixbaseurl}",
+            priority =>  "${bugfixpriority}",
+            gpgcheck => "0",
+            gpgkey   =>  'absent',
+            enabled =>  $osbugfix ? {
+              true => "1",
+              false => "0"
+            };
+       }
+
   
 }

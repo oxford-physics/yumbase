@@ -12,8 +12,11 @@ class yumbase::params(
   $ossec             = true,
   $ossecpriority     = '5',
 
-  $osdebug             =  false,
-  $osdebugpriority     = '5',
+  $osdebug           =  false,
+  $osdebugpriority   = '5',
+
+  $osbugfix          = false,
+  $bugfixpriority    = '5',
 
   $epel              =  false,
   $epelrepobaseurl   =  'pub/epel',
@@ -79,14 +82,19 @@ class yumbase::params(
   $osdebugrepobaseurlin  =  "linux/scientific/${facts['os']['release']['full']}/archive"
   $osdebugreposerverin   = 'ftp.scientificlinux.org'
 
+  $osbugfixrepobaseurlin  = 'linux/scientific'
+  $osbugfixreposerverin    = 'ftp.scientificlinux.org'
+
   }
 
   }
-  $osrepobaseurl = hiera('yumbase::params::osrepobaseurl',             "$osrepobaseurlin")
-  $osreposerver = hiera('yumbase::params::osreposerver',               "$osreposerverin")
-  $ossecreposerver = hiera('yumbase::params::ossecreposerver',         "$ossecreposerverin")
-  $ossecrepobaseurl = hiera('yumbase::params::ossecrepobaseurl'       ,"$ossecrepobaseurlin")
-  $osdebugreposerver = hiera('yumbase::params::osdebugreposerverrepo' ,"$osdebugreposerverin")
-  $osdebugrepobaseurl = hiera('yumbase::params::osdebugrepobaseurl'   ,"$osdebugrepobaseurlin")
+  $osrepobaseurl         = hiera('yumbase::params::osrepobaseurl', "$osrepobaseurlin")
+  $osreposerver          = hiera('yumbase::params::osreposerver', "$osreposerverin")
+  $ossecreposerver       = hiera('yumbase::params::ossecreposerver', "$ossecreposerverin")
+  $ossecrepobaseurl      = hiera('yumbase::params::ossecrepobaseurl', "$ossecrepobaseurlin")
+  $osdebugreposerver     = hiera('yumbase::params::osdebugreposerverrepo', "$osdebugreposerverin")
+  $osdebugrepobaseurl    = hiera('yumbase::params::osdebugrepobaseurl', "$osdebugrepobaseurlin")
+  $osbugfixreposerver    = hiera('yumbase::params::osbugfixreposerver', "$osbugfixreposerverin")
+  $osbugfixrepobaseurl   = hiera('yumbase::params::osbugfixrepobaseurl', "$osbugfixrepobaseurlin")
 }
 
