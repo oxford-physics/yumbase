@@ -69,6 +69,10 @@ class yumbase::params(
 
   $osdebugrepobaseurlin  =  'centos'
   $osdebugreposerverin   = 'mirror.centos.org'
+ 
+  $osbugfixrepobaseurlin  = 'centos'
+  $osbugfixreposerverin    = 'mirror.centos.org'
+
   }
 
   /Scientific/: {

@@ -25,6 +25,7 @@ class yumbase::os (
             $osbaseurl     = "http://${osreposerver}/${$osrepobaseurl}/${facts['os']['release']['major']}/os/${facts['os']['architecture']}"
             $secbaseurl    = "http://${ossecreposerver}/${$ossecrepobaseurl}/${facts['os']['release']['major']}/updates/${facts['os']['architecture']}"
             $debugbaseurl  = "http://${osdebugreposerver}/${$osdebugrepobaseurl}/${facts['os']['release']['major']}/${facts['os']['architecture']}"
+            $bugfixbaseurl = "http://${osbugfixreposerver}/${osbugfixrepobaseurl}/${facts['os']['release']['major']}/fasttrack/${facts['os']['architecture']}/"
             }
   default: {
             $osbaseurl     = "http://${osreposerver}/${$osrepobaseurl}/${facts['os']['release']['major']}/${facts['os']['architecture']}/os"
@@ -61,6 +62,8 @@ class yumbase::os (
               false => "0"
             };     
        }
+    
+    if ($facts['os']['name'] == "Scientific") {  
     yumrepo {
         'os-debug':
             descr    => "Base Enterprise Linux debuginfo ${facts['os']['name']}  - ${facts['os']['architecture']}",
@@ -73,6 +76,7 @@ class yumbase::os (
               false => "0"
             };     
        }
+     }
      yumrepo {
         'os-fastbugs':
             descr    => "bugfix updates ${facts['os']['name']}  - ${facts['os']['architecture']}",
