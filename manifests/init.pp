@@ -69,7 +69,7 @@ class yumbase (
    include yumbase::os
    if $tidyup {
      tidy { '/etc/yum.repos.d':
-         matches => [ 'sl[6-7]*.repo', 'repos.repo', 'sl-extras.repo', 'redhat.repo'],
+         matches => [ 'sl[6-7]*.repo', 'repos.repo', 'sl-extras.repo', 'redhat.repo', 'CentOS*.repo'],
          recurse => 1,
      }
    }

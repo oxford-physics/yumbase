@@ -1,7 +1,5 @@
 class yumbase::params(
   $autoupdate        =  'false',
-  $auto_perge        =  'true',
-  $ignore_auto_perge = '',
   $installonly_limit = 3,
   $debuglevel = 2,
   $tidyup            = 'true',
